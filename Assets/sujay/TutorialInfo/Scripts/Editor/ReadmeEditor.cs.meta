@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: 8e94f9df0ee2553419650a89ae29bfaf
+timeCreated: 1484146680
+licenseType: Store
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 191449
+  packageName: Simple Water Shader URP
+  packageVersion: 1.0.0
+  assetPath: Assets/TutorialInfo/Scripts/Editor/ReadmeEditor.cs
+  uploadId: 422776

@@ -1,0 +1,19 @@
+Ice Kingdom Revival - Full Game Story
+
+### Setting
+Peaceful Ice Kingdom ruled by King Aldric, protected by 3 Sunstones (absorb sunlight, emit warmth, repel ice magic, only active in daylight). Frostlord Varian (banished former royal mage) seeks eternal winter.
+
+### Inciting Incident
+New moon night (Sunstones dormant), Varian raids castle, steals all 3 Sunstones, freezes entire kingdom. King Aldric is encased in ice. Varian captures Princess Elara (tried to hide a Sunstone) and takes her to his Frostspire Mountain lair.
+
+### Protagonist
+Kael, junior royal guard on a night supply run, returns to find the frozen kingdom. Finds Elara’s note: *“Frostspire, save me. Sunstones split: 1 with Varian, 1 in Frozen Forest, 1 in Ice Caves under castle.”*
+
+### Main Quest (Save Princess First, She Helps)
+1. **Rescue Elara**: Fight through frozen forest to Frostspire lair, defeat Varian's lieutenant, save Elara. She joins as mage companion (ranged support, Sunstone recharge).
+2. **Retrieve Sunstones**:
+   - Frozen Forest Sunstone (melt ice puzzles)
+   - Ice Cave Sunstone (fight yetis)
+   - Steal Lair Sunstone from Varian
+3. **Defeat Varian**: Recharge all Sunstones, unfreeze King Aldric, final boss fight at castle gates. Sunstones melt Varian's armor, Kael defeats him.
+4. **Ending**: Kingdom thaws, Varian banished, Kael promoted to Head Guard.

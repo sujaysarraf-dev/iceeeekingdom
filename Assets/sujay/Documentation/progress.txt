@@ -1,0 +1,77 @@
+# Ice Kingdom Revival - Progress & Story
+## Team Roles
+- You: Logical systems, gun mechanics, core gameplay code, AI, quest logic
+- Friend: Environments, levels, props, lighting, scene design
+
+## Finalized Game Story
+### Setting
+Peaceful Ice Kingdom ruled by King Aldric, protected by 3 Sunstones (absorb sunlight, emit warmth, repel ice magic, only active in daylight). Frostlord Varian (banished former royal mage) seeks eternal winter.
+
+### Inciting Incident
+New moon night (Sunstones dormant), Varian raids castle, steals all 3 Sunstones, freezes entire kingdom. King Aldric is encased in ice. Varian captures Princess Elara (tried to hide a Sunstone) and takes her to his Frostspire Mountain lair.
+
+### Protagonist
+Kael, junior royal guard on a night supply run, returns to find the frozen kingdom. Finds Elara's note: *"Frostspire, save me. Sunstones split: 1 with Varian, 1 in Frozen Forest, 1 in Ice Caves under castle."*
+
+### Main Quest (Save princess first, she helps)
+1. **Rescue Elara**: Fight through frozen forest to Frostspire lair, defeat Varian's lieutenant, save Elara. She joins as mage companion (ranged support, Sunstone recharge).
+2. **Retrieve Sunstones**:
+   - Frozen Forest Sunstone (melt ice puzzles)
+   - Ice Cave Sunstone (fight yetis)
+   - Steal Lair Sunstone from Varian
+3. **Defeat Varian**: Recharge all Sunstones, unfreeze King Aldric, final boss fight at castle gates. Sunstones melt Varian's armor, Kael defeats him.
+4. **Ending**: Kingdom thaws, Varian banished, Kael promoted to Head Guard.
+
+## MVP Gameplay Features (Small, Complete First)
+- Easy mode: Checkpoints every 3 mins, auto-save, dodge roll i-frames, difficulty slider
+- Collectible Frostberries (restore health)
+- Cat companions (stray cats give minor buffs)
+- Optional yeti mini-bosses (drop gun upgrades)
+
+## Current Progress (Updated: May 2026)
+- Base Unity 6 project setup complete
+- Default Unity assets (TutorialInfo, NamuFX shared assets) present
+- Custom scripts completed (Assets/SCRIPTS/):
+  ✅ Player.cs (player controller, movement, health, slow motion)
+  ✅ Gun.cs, Bullet.cs, Projectile.cs (gun system, ammo, damage)
+  ✅ FlyingEnemy.cs, EnemyBullet.cs (enemy AI, attack patterns)
+  ✅ GameManager.cs, MenuManager.cs (core game flow, menus, score)
+  ✅ FrozenNPC.cs, MeltingIce.cs, Target.cs (world interactions)
+  ✅ ElaraFollow.cs (princess follow logic)
+  ✅ Shield.cs (player shield with Q key toggle, 5s cooldown)
+  ✅ Portal.cs (teleport with 3s timer or E key activation)
+  ✅ TimeRewind.cs, Rewindable.cs (global time rewind system)
+  ✅ SplittingEnemy.cs (splits into 2 smaller enemies, wandering AI, gravity)
+- Friend starting on environment prototypes
+
+## Latest Updates (May 2026)
+- Blob.cs: Simple melee enemy with configurable health, death effect, death damage & radius
+- Blob.cs: Damages player only on death (no proximity damage) via Physics.OverlapSphere
+- Bullet.cs: Detects all enemies via GetComponentInParent (works with child colliders)
+- Dragon.cs: Fixed physics movement in FixedUpdate, added proximity damage aura
+- Arachnid.cs: New spider enemy — chases player, proximity damage, bullet-detectable
+- Player.cs: Dash ability (K key), damage sound effect slot, damage overlay RawImage flash
+- Spike.cs: Spike trap with configurable damage (10), damage interval (2s), instant touch damage
+- Gun.cs: Uses Rigidbody linearVelocity for bullet movement
+- NPC.cs, NPCWaypoint.cs: Simple E-key talk NPC and waypoint following NPC
+- ArrowLauncher.cs: Auto-fires arrow volleys with spread, damages player on hit
+- SwingingAxe.cs: Pendulum axe trap, swings on configurable axis, damages player on touch
+
+## Next MVP Steps (Prioritized)
+### Your Remaining Tasks (Logical Systems)
+1. Princess Elara companion logic: Follow player, cast support magic, quest triggers
+2. Sunstone mechanics: Pickup, recharge, day/night activation, boss vulnerability
+3. Quest tracking system: Full rescue → collect Sunstones → defeat Varian flow
+4. Boss Varian AI: Unique attack patterns, Sunstone weakness logic
+5. Checkpoint/auto-save system, win/lose end screens
+6. Polish: Frostberry pickups, cat companion buffs, difficulty slider
+
+### Friend's Tasks (Environments)
+1. Create MVP Frozen Forest scene (rescue princess path) with placeholder props
+2. Basic Frostspire/Castle scene placeholders
+3. Set up day/night lighting system (Sunstone activation rules)
+
+### Integration & Polish
+- Test full core loop (rescue → collect → defeat boss) once systems and environments are ready
+- Fix bugs, optimize performance
+- Add extra features (cosmetics, side quests, cat companions) in later updates

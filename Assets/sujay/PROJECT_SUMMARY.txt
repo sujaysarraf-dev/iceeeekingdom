@@ -1,0 +1,178 @@
+iCE KINGDOM - Project Summary
+============================
+
+SETUP & CONFIGURATION
+---------------------
+- Unity project with Universal Render Pipeline (URP)
+- Project pushed to GitHub: https://github.com/sujaysarraf-dev/Ice-kingdom (main branch)
+- .gitignore excludes Library/, Temp/, Obj/, Build/, UserSettings/
+
+PLAYER SYSTEM (Player.cs)
+-----------------------
+- First-person controller with CharacterController
+- WASD movement (walkSpeed = 5f, sprintSpeed = 8f with LeftShift)
+- Mouse look (mouseSensitivity = 2f, clamped 90° up/down)
+- Cursor locked to center on start
+- Slow motion with F key (Time.timeScale)
+
+DASH ABILITY (Player.cs)
+-----------------------
+- Press K to dash in movement direction (forward if stationary)
+- Configurable: dashDistance (10), dashDuration (0.2s), dashCooldown (1s)
+- Skips normal movement during dash for clean burst
+
+HEALTH SYSTEM (Player.cs)
+-----------------------
+- Max Health: 100 HP
+- TakeDamage(int damage) method to apply damage
+- Health bar UI using Unity UI Slider (value 0-1)
+- Health bar color changes: Green (full) → Red (low) using Color.Lerp
+- Die() loads "dies" scene, unlocks cursor
+- T key: test damage (10 HP), H key: test heal (10 HP)
+
+SHIELD SYSTEM (Shield.cs)
+-------------------------
+- Toggle shield with Q key (attached to child object of Player)
+- Blocks enemies and projectiles with tags: Enemy, EnemyProjectile, Bullet
+- 5 second cooldown after deactivation
+- Requires: Collider (Is Trigger), Renderer
+
+TIME REWIND SYSTEM (TimeRewind.cs + Rewindable.cs)
+--------------------------------------------------
+- Press R to rewind all "Rewindable" tagged objects
+- Records position, rotation, velocity
+- Max rewind time: 5 seconds
+- Attach TimeRewind.cs to GameManager
+- Tag objects as "Rewindable" to make them rewindable
+
+PORTAL SYSTEM (Portal.cs)
+-------------------------
+- Teleports player after 3 seconds in trigger zone
+- Manual mode: Press E to activate instead of auto
+- Creates Portal GameObject with Collider (Is Trigger)
+- Assign teleportTarget (destination)
+
+PICKUP/DROP SYSTEM (Player.cs + Gun.cs)
+---------------------------------------
+- Pick up guns with E key (3 unit range via Physics.OverlapSphere)
+- Drop gun with G key
+- Gun attaches to gunHoldPoint transform on pickup
+
+GUN SYSTEM (Gun.cs)
+------------------
+- Automatic fire (hold left mouse button)
+- Fire rate: 10 rounds/sec
+- Damage per shot: 10
+- Ammo: 30 rounds max
+- Reload with R key (2 second reload time)
+
+TRAP SYSTEMS
+--------------
+### Arrow Launcher (ArrowLauncher.cs)
+- Auto-fires volleys of arrows from a fire point
+- Configurable: arrows per volley, spread angle, speed, fire rate, cooldown
+- Arrows home in on player direction with spread
+- Auto-adds collider and damage script to each arrow
+
+### Swinging Axe (SwingingAxe.cs)
+- Pendulum swing on X/Y/Z axis
+- Configurable: swing angle, speed, damage
+- Auto-adds kinematic Rigidbody for trigger detection
+- Damages player on contact
+
+### Spike Trap (Spike.cs)
+- Damages player while standing on it (trigger collider)
+- Configurable damage (default: 10), damage interval (default: 2s)
+- Optional instant damage on first touch
+
+ENEMY SYSTEMS
+---------------
+### Blob (Blob.cs)
+- Simple melee enemy with configurable health
+- Damages player only on death (no proximity damage)
+- Physics.OverlapSphere for death area damage with configurable radius
+- Death effect spawns on destroy, auto-removed after 2 seconds
+
+### Flying Enemy (FlyingEnemy.cs)
+- Flies with hover effect, detects player within range
+- Shoots projectiles at player
+- Health bar, score on death
+
+### Splitting Enemy (SplittingEnemy.cs)
+- Splits into 2 smaller enemies when killed
+- Size progression: 1 (100 HP) → 2 (50 HP) → 4 (25 HP) → Death
+- Wanders in small area (radius 3) when player out of range
+- Chases player when within detection range (20 units)
+- Uses Rigidbody.MovePosition() for physics-based movement
+- High mass (1000) prevents bullet push, freezes rotation, uses gravity
+- Spawns 2 copies of itself (no prefab needed)
+- Each split: half scale, half health, 1.2x speed, half score
+- Wander timer: 3 seconds between direction changes
+
+BULLET SYSTEM (Bullet.cs)
+-------------------------
+- Bullet prefab with physics (lifetime = 3 seconds)
+- Damage: 10 per bullet
+- Destroyed on hit or after lifetime
+- Detects: Blob, Dragon, FlyingEnemy, SplittingEnemy, Target via OnTriggerEnter
+- Prefab uses trigger collider, Continuous collision, Rigidbody interpolation
+- Spawned via Gun.cs using Rigidbody linearVelocity for reliable collision
+
+NPC SYSTEMS
+--------------
+### NPC.cs
+- Simple E-key interaction NPC
+- Configurable name and message in Inspector
+
+### NPCWaypoint.cs
+- Follows waypoints in a loop
+- Configurable: move speed, stop distance
+- Add Animation component for idle/walk playback
+
+### FrozenNPC.cs
+- Thaw with bullet, then talk to rescue
+- Plays talking animation, gives score on rescue
+
+GAME MANAGEMENT (GameManager.cs)
+----------------------------------
+- Score tracking system
+- Game state management
+
+ASSETS
+-------
+- Sci-Fi Sniper Rifle + Sci-Fi Gun Light (models, prefabs, materials)
+- Starter Assets (Unity official) - First/Third Person Controllers
+- Audio Files (Assets/Sounds/) - fire.mp3, reload.mp3
+- TextMesh Pro imported
+
+CONTROLS
+---------
+Move:           WASD
+Look:           Mouse
+Pick up gun:     E
+Drop gun:        G
+Shoot:           Left Click (hold for auto)
+Reload:          R
+Toggle Shield:   Q
+Slow Motion:      F
+Dash:             K
+Interact/Talk:    E
+Time Rewind:      R
+Activate Portal:  E (manual mode)
+
+GAMEPLAY FLOW
+--------------
+1. Player moves with WASD, looks with mouse
+2. Pick up gun with E, shoot with Left Click
+3. Toggle shield with Q to block enemy attacks
+4. Use portal to teleport between areas
+5. Defeat splitting enemies (they split into 2 smaller ones!)
+6. Player dies at 0 HP, cursor unlocks
+
+TAGS REQUIRED
+-------------
+- Player GameObject → Tag as "Player"
+- Enemy GameObjects → Tag as "Enemy"
+- Player Bullets → Tag as "Bullet"
+- Enemy Projectiles → Tag as "EnemyProjectile"
+- Rewindable Objects → Tag as "Rewindable"
