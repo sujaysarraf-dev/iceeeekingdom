@@ -1,65 +1,80 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
+
 namespace Sujay
 {
     public class Portal : MonoBehaviour
     {
+        [Header("Target Scene")]
+        public string sceneName = "boss";
+
         [Header("Settings")]
-        public Transform teleportTarget;
-        public float requiredTime = 3f;
+        public bool useManualActivation = false;
         public KeyCode manualActivateKey = KeyCode.E;
+        public float requiredTime = 0f;
 
         [Header("Optional")]
-        public bool useManualActivation = false;
         public GameObject portalEffect;
 
         private bool playerInPortal = false;
         private float timer = 0f;
         private GameObject player;
-        private CharacterController playerController;
 
         void Start()
         {
-            if (teleportTarget == null)
-                Debug.LogWarning("[Portal] No teleport target set! Assign a target Transform in Inspector.");
-
             Collider col = GetComponent<Collider>();
-            if (col != null && !col.isTrigger)
+            if (col == null)
             {
-                col.isTrigger = true;
-                Debug.Log("[Portal] Auto-set Collider to Is Trigger = true");
+                Debug.LogError("[Portal] No Collider found on " + gameObject.name + "! Add a Collider and set it to Trigger.");
+                return;
             }
 
-            Debug.Log("[Portal] Initialized. Required time: " + requiredTime + "s. Manual activation: " + useManualActivation);
+            if (!col.isTrigger)
+            {
+                col.isTrigger = true;
+                Debug.Log("[Portal] Auto-set Collider to Is Trigger = true on " + gameObject.name);
+            }
+
+            if (string.IsNullOrEmpty(sceneName))
+            {
+                Debug.LogError("[Portal] sceneName is empty on " + gameObject.name + "! Fill it in the Inspector.");
+            }
+            else
+            {
+                Debug.Log("[Portal] Ready on " + gameObject.name + " — will load scene: \"" + sceneName + "\"");
+            }
         }
 
         void Update()
         {
-            if (useManualActivation && playerInPortal && Input.GetKeyDown(manualActivateKey))
+            if (!playerInPortal) return;
+
+            if (useManualActivation)
             {
-                TeleportPlayer();
+                if (Input.GetKeyDown(manualActivateKey))
+                {
+                    Debug.Log("[Portal] Manual activation key pressed");
+                    TeleportToScene();
+                }
+                return;
             }
 
-            if (playerInPortal && !useManualActivation)
+            timer += Time.deltaTime;
+            if (timer >= requiredTime)
             {
-                timer += Time.deltaTime;
-
-                if (timer >= requiredTime)
-                {
-                    TeleportPlayer();
-                }
+                TeleportToScene();
             }
         }
 
         void OnTriggerEnter(Collider other)
         {
+            Debug.Log("[Portal] Trigger entered by: " + other.name + " (tag: " + other.tag + ")");
             if (other.CompareTag("Player"))
             {
                 player = other.gameObject;
-                playerController = player.GetComponent<CharacterController>();
                 playerInPortal = true;
                 timer = 0f;
-
-                Debug.Log("[Portal] Player entered portal. Stand for " + requiredTime + "s to teleport.");
+                Debug.Log("[Portal] Player entered portal — will teleport to \"" + sceneName + "\"");
             }
         }
 
@@ -70,38 +85,23 @@ namespace Sujay
                 playerInPortal = false;
                 timer = 0f;
                 player = null;
-                playerController = null;
-
-                Debug.Log("[Portal] Player left portal. Timer reset.");
+                Debug.Log("[Portal] Player left portal");
             }
         }
 
-        void TeleportPlayer()
+        void TeleportToScene()
         {
-            if (player == null || teleportTarget == null)
+            if (string.IsNullOrEmpty(sceneName))
             {
-                Debug.LogWarning("[Portal] Cannot teleport: Player or Target is null!");
+                Debug.LogError("[Portal] Cannot teleport — sceneName is empty!");
                 return;
             }
 
-            if (playerController != null)
-                playerController.enabled = false;
-
-            player.transform.position = teleportTarget.position;
-            player.transform.rotation = teleportTarget.rotation;
-
-            if (playerController != null)
-                playerController.enabled = true;
-
             if (portalEffect != null)
-                Instantiate(portalEffect, teleportTarget.position, Quaternion.identity);
+                Instantiate(portalEffect, transform.position, Quaternion.identity);
 
-            Debug.Log("[Portal] Player teleported to " + teleportTarget.name + "!");
-
-            playerInPortal = false;
-            timer = 0f;
-            player = null;
-            playerController = null;
+            Debug.Log("[Portal] Loading scene: \"" + sceneName + "\"");
+            SceneManager.LoadScene(sceneName);
         }
 
         void OnDestroy()
@@ -111,4 +111,3 @@ namespace Sujay
         }
     }
 }
-
